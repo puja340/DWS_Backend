@@ -57,6 +57,12 @@ function setupWebSocket(server) {
                 message: 'Reconnected successfully'
             }));
 
+            ws.send(JSON.stringify({
+    type: "shell_started",
+    deviceId: deviceId,
+    message: "Shell session has started"
+}));
+
             return;
         }
 
@@ -67,6 +73,21 @@ if (data.type === 'terminal_output') {
     console.log(`[Terminal Output] From ${ws.device?.deviceId || 'unknown'}:`);
     console.log(output); 
     return;   
+}
+
+if (data.type === 'terminal_exit') {
+    console.log(`[Terminal Exit] From ${ws.device?.deviceId || 'unknown'} with code ${data.code}`);
+
+    // Forward to frontend (React) so it knows nano closed
+    // You’ll need to send this to the right client socket
+    // Example:
+    // frontendSocket.send(JSON.stringify({
+    //   type: 'terminal_exit',
+    //   deviceId: ws.device?.deviceId,
+    //   code: data.code
+    // }));
+
+    return;
 }
 
 if (data.type === 'register') {
@@ -123,7 +144,7 @@ if (data.type === 'register') {
             cpu_serial,
             last_connected: new Date(),
             is_online: true
-            // IMPORTANT: We do NOT update 'name', 'group', 'description'
+            
         });
 
         console.log(`✅ Agent connected to existing device: ${deviceId} | Name: ${device.name}`);

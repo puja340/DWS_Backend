@@ -5,7 +5,6 @@ const DeviceFactory = require('./device.model');
 const { createPendingCode } = require('./device.service');
 const { onlineAgents } = require('../Websocket');
 
-
 const registerDevice = async (req, res) => {
   try {
     const { name, os, mac_address, ownerId } = req.body;
@@ -250,53 +249,39 @@ const sendCommand = async (req, res) => {
             });
         }
 
-        const requestId = 'req_' + Date.now() + Math.random().toString(36).substr(2, 9);
-
         const message = {
             type: isRawKey ? "terminal_input" : "execute_command",
             command: command,
-            requestId: requestId
         };
 
         ws.send(JSON.stringify(message));
 
         console.log(`[Terminal] Sent "${command}" to ${deviceId}`);
 
-        // For raw keys (Ctrl+X, arrows, etc.) - don't wait for output
-        if (isRawKey) {
-            return res.json({
-                success: true,
-                deviceId,
-                command,
-                type: "terminal_input"
-            });
-        }
-
-        // For normal commands - wait for output with better detection
+        // Collect output for a short time
         const output = await new Promise((resolve) => {
-            let receivedOutput = "";
+            let buffer = "";
+
             const timeout = setTimeout(() => {
-                resolve(receivedOutput || "Timeout: No response from device");
-            }, 10000);
+                resolve(buffer || "No output received");
+            }, 2000); // 6 seconds is enough for most commands
 
             const handler = (responseMsg) => {
                 try {
                     const data = JSON.parse(responseMsg.toString());
 
                     if (data.type === 'terminal_output') {
-                        receivedOutput += (data.data || "");
-
-                        // If we detect shell prompt, consider command complete
-                        if (data.data && /pi@raspberrypi.*[$#]/.test(data.data)) {
-                            clearTimeout(timeout);
-                            ws.removeListener('message', handler);
-                            resolve(receivedOutput.trim());
-                        }
+                        buffer += (data.data || data.output || "");
                     }
                 } catch (e) {}
             };
 
             ws.on('message', handler);
+
+            // Clean up listener after timeout
+            setTimeout(() => {
+                ws.removeListener('message', handler);
+            }, 6500);
         });
 
         return res.json({
