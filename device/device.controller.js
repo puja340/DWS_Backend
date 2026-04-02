@@ -264,7 +264,7 @@ const sendCommand = async (req, res) => {
 
             const timeout = setTimeout(() => {
                 resolve(buffer || "No output received");
-            }, 2000); // 6 seconds is enough for most commands
+            }, 4000); // 6 seconds is enough for most commands
 
             const handler = (responseMsg) => {
                 try {

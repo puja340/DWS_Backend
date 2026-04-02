@@ -8,6 +8,7 @@ const { setupWebSocket } = require('./Websocket');
 const updateRoutes = require('./updateProfile/update.routes');
 const groupRoutes = require('./group/group.routes');
 const emailRoutes = require('./verify-email/email.routes');
+const cors = require('cors');
 
 
 require('dotenv').config();
@@ -15,6 +16,15 @@ require('./device/device.model')(sequelize, require('sequelize').DataTypes);
 require('./verify-email/email.model')(sequelize, require('sequelize').DataTypes);
 
 const app = express();
+
+
+  // Enable CORS
+app.use(cors({
+  origin: 'http://localhost:5173', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
 app.use(express.json());
 
 // Routes
@@ -29,6 +39,8 @@ app.use('/api/email', emailRoutes);
 sequelize.sync({ alter: true })
   .then(() => console.log('Postgres connected & models synced'))
   .catch(err => console.error(err));
+
+
 
   
 
