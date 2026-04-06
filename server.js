@@ -8,6 +8,7 @@ const { setupWebSocket } = require('./Websocket');
 const updateRoutes = require('./updateProfile/update.routes');
 const groupRoutes = require('./group/group.routes');
 const emailRoutes = require('./verify-email/email.routes');
+const fileRoutes = require('./file-handling/file.routes');
 const cors = require('cors');
 
 
@@ -35,6 +36,7 @@ app.use('/api/device', deviceRoutes);
 app.use('/api/group', groupRoutes);   
 app.use('/api/update', updateRoutes);
 app.use('/api/email', emailRoutes);   
+app.use('/api/files', fileRoutes);
 
 sequelize.sync({ alter: true })
   .then(() => console.log('Postgres connected & models synced'))
