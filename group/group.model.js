@@ -1,12 +1,12 @@
 // group/group.model.js
-
 'use strict';
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Group extends Model {
     static associate(models) {
-      // You can add associations later if needed
+      // You can add association with Device later
+      // Group.hasMany(models.Device, { foreignKey: 'group_id' });
     }
   }
 
@@ -20,7 +20,10 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING(100),
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: {
+        notEmpty: true
+      }
     },
     description: {
       type: DataTypes.TEXT,
@@ -29,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Group',
-    tableName: 'groups',        // optional: if you want a separate groups table
+    tableName: 'groups',
     timestamps: true,
     underscored: true,
   });

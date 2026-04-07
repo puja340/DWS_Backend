@@ -58,7 +58,7 @@ exports.uploadFiles = async (req, res) => {
       fileName: file.filename,
       size: file.size,
       path: `uploads/${folder}/${file.filename}`,
-      url: `http://localhost:5000/uploads/${folder}/${file.filename}`
+      url: `${process.env.BASE_URL}/uploads/${folder}/${file.filename}`
     }));
 
     res.status(200).json({
@@ -117,7 +117,7 @@ exports.listFiles = async (req, res) => {
           uploadDate: stats.mtime,
           type: 'file',
           path: path.join(folderName, file.name).replace(/\\/g, '/'),
-          url: `http://localhost:5000/uploads/${folderName ? folderName + '/' : ''}${file.name}`
+          url: `${process.env.BASE_URL}/uploads/${folderName ? folderName + '/' : ''}${file.name}`
         };
       });
 
@@ -184,3 +184,6 @@ exports.deleteFile = async (req, res) => {
     });
   }
 };
+
+
+
