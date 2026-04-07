@@ -1,18 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../middleware/multer');
-const {createFolder, uploadFiles, listFiles, deleteFile} = require('./file.controller');
+const { uploadFile, deleteFile, renameFile, createFolder, downloadFile} = require('./file.controller');
 
-// create folder
-router.post('/create-folder', createFolder);
+// Upload file to specific device - Keeping /api/files base
+router.post('/:deviceId/upload-file', upload.single('file'), uploadFile);
 
-// Upload Single or Multiple Files
-router.post('/upload', upload.array('files', 10), uploadFiles);   
+router.delete('/:deviceId/delete', deleteFile);
 
-// List Files & Folders
-router.get('/list', listFiles);
+router.put('/:deviceId/rename', renameFile);     // or router.patch if you prefer
 
-// delete file or folder
-router.delete('/delete', deleteFile);     
+router.post('/:deviceId/create-folder', createFolder);
+
+router.post('/:deviceId/download', downloadFile);
 
 module.exports = router;

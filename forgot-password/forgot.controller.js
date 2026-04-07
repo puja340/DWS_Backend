@@ -38,6 +38,7 @@ exports.requestReset = async (req, res) => {
     res.status(500).json({ message: 'Error generating reset link' });
   }
 };
+
 // Step B: Reset Password
 exports.resetPassword = async (req, res) => {
   try {
@@ -47,7 +48,7 @@ exports.resetPassword = async (req, res) => {
     if (!user || user.resetTokenExpiry < Date.now()) {
       return res.status(400).json({ message: 'Invalid or expired token' });
     }
-
+  
     // Hash new password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;

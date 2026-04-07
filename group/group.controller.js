@@ -106,7 +106,7 @@ const deleteGroup = async (req, res) => {
   }
 };
 
-// ====================== NEW: UPDATE / EDIT GROUP ======================
+// ====================== NEW: UPDATE / EDIT GROUP ====================
 const updateGroup = async (req, res) => {
   try {
     const { id } = req.params;
