@@ -18,11 +18,10 @@ require('./verify-email/email.model')(sequelize, require('sequelize').DataTypes)
 
 const app = express();
 
-
   // Enable CORS
 app.use(cors({
   origin: 'http://localhost:5173', 
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   credentials: true
 }));
 

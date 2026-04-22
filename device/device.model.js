@@ -38,14 +38,14 @@ module.exports = (sequelize, DataTypes) => {
     },
   name: {
     type: DataTypes.STRING(100),
-    allowNull: false,          // We will save user-given name
+    allowNull: false,          
     defaultValue: 'Unnamed Device',
   },
-  group: {                     // ← New
+  group: {                   
     type: DataTypes.STRING(100),
     allowNull: true,
   },
-  description: {               // ← New
+  description: {              
     type: DataTypes.TEXT,
     allowNull: true,
   },

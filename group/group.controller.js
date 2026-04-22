@@ -110,7 +110,7 @@ const deleteGroup = async (req, res) => {
 const updateGroup = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description } = req.body;
+    const { name, description } = req.body; 
 
     if (!id) {
       return res.status(400).json({
@@ -178,7 +178,6 @@ const updateGroup = async (req, res) => {
     });
   }
 };
-
 
 module.exports = {
     getAllGroups,

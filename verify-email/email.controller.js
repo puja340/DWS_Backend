@@ -1,7 +1,7 @@
 // update/email.controller.js  (or verify-email/email.controller.js)
 
 const bcrypt = require('bcrypt');
-const transporter = require('../config/mail');   // ← Use your existing mail transporter
+const transporter = require('../config/mail'); 
 
 const sendEmailChangeOTP = async (req, res) => {
     try {

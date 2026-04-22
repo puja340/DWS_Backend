@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const LoginModel = require('./login.model');
-const User = require('../models/User'); // Adjust path as needed
+const User = require('../models/User'); 
 
 exports.login = async (req, res) => {
   try {
@@ -31,10 +31,6 @@ exports.login = async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'Login failed' });
   }
-
-  // login.controller.js  (or user.controller.js)
-
-
 };
 
 exports.getUserInfo = async (req, res) => {
@@ -82,7 +78,7 @@ exports.getUserInfo = async (req, res) => {
   }
 };
 
-// Simple Logout - No blacklist needed
+
 exports.logout = async (req, res) => {
     try {
         // Optional: You can log the logout event here if you want

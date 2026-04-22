@@ -203,7 +203,8 @@ const listMyDevices = async (req, res) => {
                 'cpu_serial',
                 'last_connected',
                 'is_online',
-                'created_at'
+                'created_at',
+                'pairing_code'
             ],
             order: [['last_connected', 'DESC']]   // newest first
         });
@@ -606,6 +607,7 @@ const rebootOS = async (req, res) => {
         });
     }
 };
+
 
 module.exports = {
   registerDevice,
